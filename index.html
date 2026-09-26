@@ -83,7 +83,6 @@
     width:min(460px, 92%);
     height:150px;
     margin:0 auto;
-    touch-action:none;
   }
 
   button{
@@ -100,7 +99,7 @@
     box-shadow:0 10px 24px rgba(0,0,0,.4);
     user-select:none;
     -webkit-tap-highlight-color:transparent;
-    transition: transform .12s ease, background .12s ease;
+    transition: transform .18s cubic-bezier(.34,1.56,.64,1), background .12s ease;
   }
 
   #yesBtn{
@@ -108,6 +107,7 @@
     background:var(--yes);
     color:#fff;
     border:1px solid rgba(255,255,255,.12);
+    z-index:2;
   }
   #yesBtn:hover{ background:var(--yesHover); }
 
@@ -116,7 +116,15 @@
     background:var(--no-bg);
     color:#c4c9e0;
     border:1px solid rgba(255,255,255,.06);
+    z-index:1;
   }
+
+  @keyframes noShake{
+    0%,100%{ transform:translateY(-50%) rotate(0); }
+    25%{ transform:translateY(-50%) rotate(-6deg); }
+    75%{ transform:translateY(-50%) rotate(6deg); }
+  }
+  #noBtn.shake{ animation: noShake .3s ease; }
 
   .hint{
     margin-top:14px;
@@ -369,48 +377,26 @@
     });
   }
 
-  /* ---------- YES BUTTON GROWS ---------- */
+  /* ---------- NO BUTTON: TAP-TO-GROW (mobile-friendly) ----------
+     Dragging away from a finger doesn't work reliably on touch screens,
+     so instead every tap on "No" just grows "Yes" a step. After about
+     4-5 taps it hits the cap and stops growing, nudging people toward Yes. */
+  const YES_SCALE_STEP = 0.3;
+  const YES_SCALE_MAX = 2.2;
   let yesScale = 1;
+
   function growYes(){
-    yesScale = Math.min(2.2, yesScale + 0.1);
+    yesScale = Math.min(YES_SCALE_MAX, yesScale + YES_SCALE_STEP);
     yesBtn.style.transform = `translateY(-50%) scale(${yesScale})`;
   }
 
-  /* ---------- NO BUTTON RUNS AWAY ---------- */
-  function clamp(n, min, max){ return Math.max(min, Math.min(max, n)); }
-
-  function moveNo(px, py){
-    const z = zone.getBoundingClientRect();
-    const b = noBtn.getBoundingClientRect();
-
-    let dx = (b.left + b.width/2) - px;
-    let dy = (b.top + b.height/2) - py;
-    let mag = Math.hypot(dx, dy) || 1;
-    dx /= mag; dy /= mag;
-
-    let newLeft = (b.left - z.left) + dx * 150;
-    let newTop  = (b.top - z.top) + dy * 150;
-
-    newLeft = clamp(newLeft, 0, z.width - b.width);
-    newTop  = clamp(newTop, 0, z.height - b.height);
-
-    noBtn.style.left = newLeft + "px";
-    noBtn.style.top = newTop + "px";
-    noBtn.style.transform = "none";
-
+  noBtn.addEventListener("click", (e) => {
+    e.preventDefault();
     growYes();
-  }
-
-  zone.addEventListener("pointermove", e => {
-    const b = noBtn.getBoundingClientRect();
-    const d = Math.hypot(
-      (b.left + b.width/2) - e.clientX,
-      (b.top + b.height/2) - e.clientY
-    );
-    if(d < 140) moveNo(e.clientX, e.clientY);
+    noBtn.classList.remove("shake");
+    void noBtn.offsetWidth; // restart animation
+    noBtn.classList.add("shake");
   });
-
-  noBtn.addEventListener("click", e => e.preventDefault());
 
   /* ---------- YES CLICK -> SHOW ENVELOPE ---------- */
   yesBtn.addEventListener("click", () => {
