@@ -5,6 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>Naga-d</title>
 
+<!-- 링크 미리보기(카톡/아이메시지/페이스북 등)에 뜰 내용을 고정.
+     이게 없으면 메신저가 페이지 속 편지 글을 그대로 긁어서 보여줄 수 있음 -->
+<meta name="description" content="click 🎁" />
+<meta property="og:title" content="🎁" />
+<meta property="og:description" content="click" />
+<meta property="og:type" content="website" />
+
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 
 <style>
@@ -260,30 +267,29 @@
 <main class="card">
 
   <section id="askSection">
-    <h1>Do not press "NO"</h1>
+    <h1>Do not press NO</h1>
 
     <section class="button-zone" id="zone">
       <button id="yesBtn">Yes</button>
       <button id="noBtn">No</button>
     </section>
 
-    <div class="hint" id="hint">"No" is shy 😈</div>
+    <div class="hint" id="hint">"No" is shy😈</div>
   </section>
 
   <section class="scene" id="scene">
-    <div class="stage-label" id="stageLabel">захиа ирсэн байна</div>
+    <div class="stage-label" id="stageLabel">click to open</div>
 
     <div class="envelope-wrap" id="envelopeWrap">
 
       <div class="letter" id="letter">
         <div class="letter-content">
-          <p class="greeting">To. Gan-Erdene</p>
-          <p>20-иод нас гэдэг яг намар шиг юм байна өө. Өдөр бүр нь арай өөр өнгөтэй, арай өөр мэдрэмжтэй. Надад ч гэсэн 27 нас ийм л санагдаж байна.</p>
-          <p>Түгшүүртэй, яарсан, догдолсон мөртлөө хааяа эргээд харахаар үл мэдэг гуниг төрүүлдэг.</p>
+          <p class="greeting">To. Ган-Эрдэнэ</p>
+          <p>20-иод нас гэдэг яг намар шиг юм байна өө. Өдөр бүр нь арай өөр өнгөтэй, арай өөр мэдрэмжтэй. Надад ч гэсэн 27 нас ийм л санагдаж байна. </p>
+          <p>Түгшүүртэй, яарсан, догдолсон мөртлөө хааяа эргээд харахаар үл мэдэг гуниг төрүүлдэг. </p>
           <p>Гэхдээ энэ бүх эргэлзээ, догдлол, гуниг, баяр хөөр гээд хоорондоо холилдсон мэдрэмжүүд л 20-иод насны хамгийн үнэ цэнтэй бэлэг байх.</p>
           <p>Тиймээс 20-иод насныхаа сүүлийн мөчүүдийг бэлэг шиг л хайрлаарай.
-Төрсөн өдрийн мэнд хүргэе. Хүссэн бүхэндээ хүрээрэй. 🫂🤍
-</p>
+Төрсөн өдрийн мэнд хүргэе. Хүссэн бүхэндээ хүрээрэй. 🫂🤍</p>
           <p class="sign">HAPPY BIRTHDAY 🎂</p>
         </div>
       </div>
@@ -426,7 +432,7 @@
     envelopeWrap.classList.add("opened");
     letterEl.style.maxHeight = fullHeight + "px";
     tapHint.classList.add("hide");
-    stageLabel.textContent = "Tada! 🎁";
+    stageLabel.textContent = "🎁";
 
     // let the flap-open animation finish, then remove the envelope
     // entirely so the letter is the only thing left on screen
